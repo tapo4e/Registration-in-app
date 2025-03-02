@@ -38,7 +38,6 @@ import com.example.registration.ui.theme.LightBlue
 
 @Composable
 fun LoadScreen(modifier: Modifier = Modifier) {
-    var loop by remember { mutableStateOf(true) }
     val infiniteScale = rememberInfiniteTransition(label = "")
     val scale by infiniteScale.animateFloat(
         initialValue = 1f,
