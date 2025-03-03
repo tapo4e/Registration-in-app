@@ -92,8 +92,7 @@ fun LoadScreen(modifier: Modifier = Modifier) {
                 .align(Alignment.Center)
                 .padding(top = 160.dp),
             fontSize = 40.sp,
-            fontFamily = FontFamily( Font(R.font.roboto)),
-            fontWeight = FontWeight(700),
+            fontWeight = FontWeight(500),
             color = LightBlue
         )
     }

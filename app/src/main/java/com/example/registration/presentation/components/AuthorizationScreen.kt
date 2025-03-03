@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -43,6 +46,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.registration.R
+import com.example.registration.ui.icons.Flag_of_Russia
+import com.example.registration.ui.theme.LightBlue
 import com.example.registration.ui.theme.LightGray
 import com.example.registration.ui.theme.LightGray2
 
@@ -62,8 +67,7 @@ fun AuthorizationScreen(modifier: Modifier = Modifier) {
             Text(
                 text = "Let's get started",
                 fontSize = 32.sp,
-                fontFamily = FontFamily(Font(R.font.roboto)),
-                fontWeight = FontWeight(700),
+                fontWeight = FontWeight(600),
                 color = Color.Black
 
             )
@@ -71,8 +75,6 @@ fun AuthorizationScreen(modifier: Modifier = Modifier) {
                 text = "Enter your phone number. We will send you a confirmation code there",
                 modifier.size(286.dp, 40.dp),
                 fontSize = 14.sp,
-                fontFamily = FontFamily(Font(R.font.roboto)),
-                fontWeight = FontWeight(400),
                 color = LightGray
             )
             Row(
@@ -107,16 +109,16 @@ fun AuthorizationScreen(modifier: Modifier = Modifier) {
                                 spotColor = Color.Black
                             )
                     )
-                    Text(text = "+7", modifier
-                        .align(Alignment.Center)
-                        .padding(start = 30.dp),
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily(Font(R.font.roboto)),
-                    fontWeight = FontWeight(400),
-                    color = Color.Black)
+                    Text(
+                        text = "+7", modifier
+                            .align(Alignment.Center)
+                            .padding(start = 30.dp),
+                        fontSize = 16.sp,
+                        color = Color.Black
+                    )
                 }
                 TextField(value = text,
-                    onValueChange ={text=it},
+                    onValueChange = { text = it },
                     colors = TextFieldDefaults.colors(
                         cursorColor = Color.White,
                         disabledTextColor = Color.Transparent,
@@ -131,8 +133,28 @@ fun AuthorizationScreen(modifier: Modifier = Modifier) {
                     modifier = modifier
                         .padding(start = 10.dp)
                         .clip(RoundedCornerShape(10.dp)),
-                    placeholder = {Text("asd")}
+                    placeholder = {
+                        Text(
+                            "Mobile number",
+                            fontSize = 16.sp,
+                            color = LightGray
                         )
+                    }
+                )
+            }
+            Button(
+                onClick = { /*TODO*/ },
+                modifier
+                    .padding(top = 20.dp)
+                    .size(328.dp, 50.dp),
+                shape = RoundedCornerShape(14.dp),
+                colors = ButtonDefaults.buttonColors(
+                    LightBlue
+                )
+
+            ) {
+                Text(text = "Continue",
+                    fontSize = 16.sp)
             }
         }
     }
@@ -144,74 +166,3 @@ fun AuthorizationScreenPreview() {
     AuthorizationScreen()
 }
 
-val Flag_of_Russia: ImageVector
-    get() {
-        if (_Flag_of_Russia != null) {
-            return _Flag_of_Russia!!
-        }
-        _Flag_of_Russia = ImageVector.Builder(
-            name = "Flag_of_Russia",
-            defaultWidth = 900.dp,
-            defaultHeight = 600.dp,
-            viewportWidth = 9f,
-            viewportHeight = 6f
-        ).apply {
-            path(
-                fill = SolidColor(Color(0xFFFFFFFF)),
-                fillAlpha = 1.0f,
-                stroke = null,
-                strokeAlpha = 1.0f,
-                strokeLineWidth = 1.0f,
-                strokeLineCap = StrokeCap.Butt,
-                strokeLineJoin = StrokeJoin.Miter,
-                strokeLineMiter = 1.0f,
-                pathFillType = PathFillType.NonZero
-            ) {
-                moveTo(0f, 0f)
-                horizontalLineTo(9f)
-                verticalLineTo(3f)
-                horizontalLineTo(0f)
-                verticalLineTo(0f)
-                close()
-            }
-            path(
-                fill = SolidColor(Color(0xFFD52B1E)),
-                fillAlpha = 1.0f,
-                stroke = null,
-                strokeAlpha = 1.0f,
-                strokeLineWidth = 1.0f,
-                strokeLineCap = StrokeCap.Butt,
-                strokeLineJoin = StrokeJoin.Miter,
-                strokeLineMiter = 1.0f,
-                pathFillType = PathFillType.NonZero
-            ) {
-                moveTo(0f, 3f)
-                horizontalLineTo(9f)
-                verticalLineTo(6f)
-                horizontalLineTo(0f)
-                verticalLineTo(3f)
-                close()
-            }
-            path(
-                fill = SolidColor(Color(0xFF0039A6)),
-                fillAlpha = 1.0f,
-                stroke = null,
-                strokeAlpha = 1.0f,
-                strokeLineWidth = 1.0f,
-                strokeLineCap = StrokeCap.Butt,
-                strokeLineJoin = StrokeJoin.Miter,
-                strokeLineMiter = 1.0f,
-                pathFillType = PathFillType.NonZero
-            ) {
-                moveTo(0f, 2f)
-                horizontalLineTo(9f)
-                verticalLineTo(4f)
-                horizontalLineTo(0f)
-                verticalLineTo(2f)
-                close()
-            }
-        }.build()
-        return _Flag_of_Russia!!
-    }
-
-private var _Flag_of_Russia: ImageVector? = null
