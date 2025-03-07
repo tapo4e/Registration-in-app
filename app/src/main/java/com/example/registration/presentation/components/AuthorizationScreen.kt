@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -95,13 +96,13 @@ fun AuthorizationScreen(modifier: Modifier = Modifier) {
 
                     }) {
                     Image(
-                        imageVector = Flag_of_Russia,
+                        painter = painterResource(id = R.drawable.russian_flag),
                         contentDescription = "Flag_of_Russia",
                         contentScale = ContentScale.Crop,
                         modifier = modifier
                             .align(Alignment.CenterStart)
                             .padding(start = 14.dp)
-                            .size(24.dp, 24.dp)
+                            .size(27.dp)
                             .shadow(
                                 4.dp,
                                 shape = CircleShape,
