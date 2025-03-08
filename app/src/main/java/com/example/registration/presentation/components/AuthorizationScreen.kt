@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -55,108 +56,109 @@ import com.example.registration.ui.theme.LightGray2
 @Composable
 fun AuthorizationScreen(modifier: Modifier = Modifier) {
     var text by remember { mutableStateOf("") }
-    Box(
+    Column(
         modifier
-            .fillMaxSize()
             .background(Color.White)
+            .padding(start = 16.dp, top = 20.dp,end = 16.dp)
+            .fillMaxSize()
+
+
     ) {
-        Column(
+        Text(
+            text = "Let's get started",
+            fontSize = 32.sp,
+            fontWeight = FontWeight(600),
+            color = Color.Black
+
+        )
+        Text(
+            text = "Enter your phone number. We will send you a confirmation code there",
+            modifier.size(286.dp, 40.dp),
+            fontSize = 14.sp,
+            color = LightGray
+        )
+        Row(
             modifier
-                .fillMaxSize()
-                .padding(start = 16.dp, top = 20.dp)
+                .padding(top = 20.dp)
+                .height(52.dp)
+
         ) {
-            Text(
-                text = "Let's get started",
-                fontSize = 32.sp,
-                fontWeight = FontWeight(600),
-                color = Color.Black
-
-            )
-            Text(
-                text = "Enter your phone number. We will send you a confirmation code there",
-                modifier.size(286.dp, 40.dp),
-                fontSize = 14.sp,
-                color = LightGray
-            )
-            Row(
-                modifier
-                    .padding(top = 20.dp)
-                    .size(328.dp, 52.dp)
-            ) {
-                Box(modifier = modifier
-                    .fillMaxHeight()
-                    .width(75.dp)
-                    .drawBehind {
-                        drawRoundRect(
-                            color = LightGray2,
-                            topLeft = Offset.Zero,
-                            size = Size(75.dp.toPx(), 52.dp.toPx()),
-                            cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
-                        )
-
-                    }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.russian_flag),
-                        contentDescription = "Flag_of_Russia",
-                        contentScale = ContentScale.Crop,
-                        modifier = modifier
-                            .align(Alignment.CenterStart)
-                            .padding(start = 14.dp)
-                            .size(27.dp)
-                            .shadow(
-                                4.dp,
-                                shape = CircleShape,
-                                ambientColor = Color.White,
-                                spotColor = Color.Black
-                            )
+            Box(modifier = modifier
+                .fillMaxHeight()
+                .width(75.dp)
+                .drawBehind {
+                    drawRoundRect(
+                        color = LightGray2,
+                        topLeft = Offset.Zero,
+                        size = Size(75.dp.toPx(), 52.dp.toPx()),
+                        cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
                     )
+
+                }) {
+                Image(
+                    painter = painterResource(id = R.drawable.russian_flag),
+                    contentDescription = "Flag_of_Russia",
+                    contentScale = ContentScale.Crop,
+                    modifier = modifier
+                        .align(Alignment.CenterStart)
+                        .padding(start = 14.dp)
+                        .size(27.dp)
+                        .shadow(
+                            4.dp,
+                            shape = CircleShape,
+                            ambientColor = Color.White,
+                            spotColor = Color.Black
+                        )
+                )
+                Text(
+                    text = "+7", modifier
+                        .align(Alignment.Center)
+                        .padding(start = 30.dp),
+                    fontSize = 16.sp,
+                    color = Color.Black
+                )
+            }
+            TextField(value = text,
+                onValueChange = { text = it },
+                colors = TextFieldDefaults.colors(
+                    cursorColor = Color.White,
+                    disabledTextColor = Color.Transparent,
+                    focusedContainerColor = LightGray2,
+                    unfocusedContainerColor = LightGray2,
+                    disabledContainerColor = LightGray2,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+
+                    ),
+                modifier = modifier
+                    .padding(start = 10.dp)
+                    .clip(RoundedCornerShape(10.dp)),
+                placeholder = {
                     Text(
-                        text = "+7", modifier
-                            .align(Alignment.Center)
-                            .padding(start = 30.dp),
+                        "Mobile number",
                         fontSize = 16.sp,
-                        color = Color.Black
+                        color = LightGray
                     )
                 }
-                TextField(value = text,
-                    onValueChange = { text = it },
-                    colors = TextFieldDefaults.colors(
-                        cursorColor = Color.White,
-                        disabledTextColor = Color.Transparent,
-                        focusedContainerColor = LightGray2,
-                        unfocusedContainerColor = LightGray2,
-                        disabledContainerColor = LightGray2,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
+            )
+        }
+        Button(
+            onClick = { /*TODO*/ },
+            modifier
+                .padding(top = 20.dp)
+                .fillMaxWidth()
+                .height(50.dp),
+            shape = RoundedCornerShape(14.dp),
+            colors = ButtonDefaults.buttonColors(
+                LightBlue
+            )
 
-                        ),
-                    modifier = modifier
-                        .padding(start = 10.dp)
-                        .clip(RoundedCornerShape(10.dp)),
-                    placeholder = {
-                        Text(
-                            "Mobile number",
-                            fontSize = 16.sp,
-                            color = LightGray
-                        )
-                    }
-                )
-            }
-            Button(
-                onClick = { /*TODO*/ },
-                modifier
-                    .padding(top = 20.dp)
-                    .size(328.dp, 50.dp),
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(
-                    LightBlue
-                )
-
-            ) {
-                Text(text = "Continue",
-                    fontSize = 16.sp)
-            }
+        ) {
+            Text(
+                text = "Continue",
+                fontSize = 16.sp
+            )
         }
     }
 }
