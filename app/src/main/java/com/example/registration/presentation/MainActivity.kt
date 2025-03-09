@@ -1,20 +1,15 @@
 package com.example.registration.presentation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.focus.FocusRequester
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.registration.presentation.components.AuthorizationScreen
 import com.example.registration.presentation.components.CodeInputScreen
@@ -22,13 +17,6 @@ import com.example.registration.presentation.components.EndScreen
 import com.example.registration.presentation.components.LoadScreen
 import com.example.registration.presentation.components.OtpViewModel
 import com.example.registration.presentation.components.SelectCountryScreen
-import com.google.firebase.FirebaseException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.PhoneAuthCredential
-import com.google.firebase.auth.PhoneAuthOptions
-import com.google.firebase.auth.PhoneAuthProvider
-import com.google.firebase.ktx.Firebase
-import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
 
@@ -100,14 +88,24 @@ class MainActivity : ComponentActivity() {
                             }
                             viewModel.onAction(action)
                         },
-                        goEnd = { navController.navigate("end_screen") },
+                        goEnd = {
+                            screenViewModel.isResend =false
+                                 navController . navigate ("end_screen"){
+                                    popUpTo("auth_screen") {
+                                        inclusive = true
+                                    }
+                                }
+                        },
                         goBack = {
                             navController.navigate("auth_screen") {
                                 popUpTo("auth_screen") {
                                     inclusive = true
                                 }
                             }
-                        }
+                        },
+                        resend = { screenViewModel.timer() },
+                        isResend = screenViewModel.isResend,
+                        timeLeft = screenViewModel.getTime()
                     )
                 }
 

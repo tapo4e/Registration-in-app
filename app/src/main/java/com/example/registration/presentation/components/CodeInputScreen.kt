@@ -39,8 +39,11 @@ fun CodeInputScreen(
     focusRequesters: List<FocusRequester>,
     onAction: (OtpAction) -> Unit,
     modifier: Modifier = Modifier,
-    goEnd:()->Unit,
-    goBack:() -> Unit
+    goEnd: () -> Unit,
+    goBack: () -> Unit,
+    resend: () -> Unit,
+    isResend: Boolean,
+    timeLeft: String
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -130,14 +133,22 @@ fun CodeInputScreen(
 
         }
         Text(
-            text = "No code received?",
+            text = if (!isResend) {
+                "No code received?"
+            } else {
+                "Resend the code in 0:$timeLeft"
+            },
             modifier
                 .padding(top = 20.dp)
                 .align(Alignment.CenterHorizontally)
-                .clickable {  },
+                .clickable(!isResend, onClick = {resend()}),
             fontSize = 16.sp,
             fontWeight = FontWeight(500),
-            color = LightBlue
+            color = if (!isResend) {
+                LightBlue
+            } else {
+                LightGray
+            }
         )
 //        state.isValid?.let { isValid ->
 //            Text(
@@ -157,5 +168,7 @@ fun CodeInputScreenPreview() {
     CodeInputScreen(
         state = OtpState(),
         focusRequesters = List(6) { FocusRequester() },
-        onAction = {}, goEnd = {}, goBack = {})
+        onAction = {}, goEnd = {}, goBack = {},
+        resend = {}, isResend = true, timeLeft = ""
+    )
 }
