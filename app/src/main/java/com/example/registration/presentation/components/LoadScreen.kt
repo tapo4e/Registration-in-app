@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,9 +36,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.registration.R
 import com.example.registration.ui.theme.LightBlue
+import kotlinx.coroutines.delay
 
 @Composable
-fun LoadScreen(modifier: Modifier = Modifier) {
+fun LoadScreen(modifier: Modifier = Modifier,
+               navigate: () ->Unit) {
     val infiniteScale = rememberInfiniteTransition(label = "")
     val scale by infiniteScale.animateFloat(
         initialValue = 1f,
@@ -47,6 +50,10 @@ fun LoadScreen(modifier: Modifier = Modifier) {
             repeatMode = RepeatMode.Reverse
         ), label = ""
     )
+    LaunchedEffect(Unit){
+        delay(3000)
+        navigate()
+    }
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -102,5 +109,5 @@ fun LoadScreen(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun LoadScreenPreview() {
-    LoadScreen()
+    LoadScreen(){}
 }

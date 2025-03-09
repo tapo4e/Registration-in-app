@@ -1,7 +1,9 @@
 package com.example.registration.presentation.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -33,33 +36,33 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathFillType
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.StrokeJoin
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.registration.R
-import com.example.registration.ui.icons.Flag_of_Russia
+import com.example.registration.data.Country
 import com.example.registration.ui.theme.LightBlue
 import com.example.registration.ui.theme.LightGray
 import com.example.registration.ui.theme.LightGray2
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
-fun AuthorizationScreen(modifier: Modifier = Modifier) {
+fun AuthorizationScreen(
+    modifier: Modifier = Modifier,
+    country: Country,
+    selectCountry: () -> Unit,
+    sendCode: (phone: String) -> Unit
+) {
+    var isEdit by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("") }
     Column(
         modifier
             .background(Color.White)
-            .padding(start = 16.dp, top = 20.dp,end = 16.dp)
+            .padding(start = 16.dp, top = 20.dp, end = 16.dp)
             .fillMaxSize()
 
 
@@ -85,18 +88,20 @@ fun AuthorizationScreen(modifier: Modifier = Modifier) {
         ) {
             Box(modifier = modifier
                 .fillMaxHeight()
-                .width(75.dp)
+                .width(90.dp)
+                .clip(RoundedCornerShape(10.dp))
                 .drawBehind {
                     drawRoundRect(
                         color = LightGray2,
                         topLeft = Offset.Zero,
-                        size = Size(75.dp.toPx(), 52.dp.toPx()),
+                        size = Size(90.dp.toPx(), 52.dp.toPx()),
                         cornerRadius = CornerRadius(10.dp.toPx(), 10.dp.toPx())
                     )
 
-                }) {
+                }
+                .clickable { selectCountry() }) {
                 Image(
-                    painter = painterResource(id = R.drawable.russian_flag),
+                    painter = painterResource(id = country.png),
                     contentDescription = "Flag_of_Russia",
                     contentScale = ContentScale.Crop,
                     modifier = modifier
@@ -111,7 +116,8 @@ fun AuthorizationScreen(modifier: Modifier = Modifier) {
                         )
                 )
                 Text(
-                    text = "+7", modifier
+                    text = country.number,
+                    modifier
                         .align(Alignment.Center)
                         .padding(start = 30.dp),
                     fontSize = 16.sp,
@@ -119,7 +125,12 @@ fun AuthorizationScreen(modifier: Modifier = Modifier) {
                 )
             }
             TextField(value = text,
-                onValueChange = { text = it },
+                onValueChange = {
+                    if(it.length<=country.size)
+                    text = it
+                    isEdit = country.regex.matches(text)
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                 colors = TextFieldDefaults.colors(
                     cursorColor = Color.White,
                     disabledTextColor = Color.Transparent,
@@ -136,15 +147,12 @@ fun AuthorizationScreen(modifier: Modifier = Modifier) {
                     .clip(RoundedCornerShape(10.dp)),
                 placeholder = {
                     Text(
-                        "Mobile number",
-                        fontSize = 16.sp,
-                        color = LightGray
+                        "Mobile number", fontSize = 16.sp, color = LightGray
                     )
-                }
-            )
+                })
         }
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { sendCode(country.number + text) },
             modifier
                 .padding(top = 20.dp)
                 .fillMaxWidth()
@@ -152,12 +160,12 @@ fun AuthorizationScreen(modifier: Modifier = Modifier) {
             shape = RoundedCornerShape(14.dp),
             colors = ButtonDefaults.buttonColors(
                 LightBlue
-            )
+            ),
+            enabled = isEdit
 
         ) {
             Text(
-                text = "Continue",
-                fontSize = 16.sp
+                text = "Continue", fontSize = 16.sp
             )
         }
     }
@@ -166,6 +174,8 @@ fun AuthorizationScreen(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun AuthorizationScreenPreview() {
-    AuthorizationScreen()
+    AuthorizationScreen(country = Country("", "+375", R.drawable.belarus_flag, Regex(""),10),
+        selectCountry = {},
+        sendCode = {})
 }
 

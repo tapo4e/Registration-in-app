@@ -1,6 +1,7 @@
 package com.example.registration.presentation.components
 
 
+import android.annotation.SuppressLint
 import android.view.KeyEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -37,6 +38,7 @@ import androidx.core.text.isDigitsOnly
 import com.example.registration.ui.theme.LightGray
 import com.example.registration.ui.theme.LightGray2
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun OtpInputField(
     number: Int?,
@@ -104,10 +106,11 @@ fun OtpInputField(
                 },
             decorationBox = { innerBox ->
                 innerBox()
-            if(isFocused)
-            color = LightGray
-            else
-            color = LightGray2}
+                color = if(isFocused)
+                    LightGray
+                else
+                    LightGray2
+            }
         )
     }
 }

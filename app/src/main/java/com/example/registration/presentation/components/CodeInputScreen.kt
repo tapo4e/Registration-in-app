@@ -1,13 +1,11 @@
 package com.example.registration.presentation.components
 
-import android.accessibilityservice.AccessibilityService.SoftKeyboardController
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,10 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -37,13 +33,14 @@ import com.example.registration.presentation.OtpAction
 import com.example.registration.ui.theme.LightBlue
 import com.example.registration.ui.theme.LightGray
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CodeInputScreen(
     state: OtpState,
     focusRequesters: List<FocusRequester>,
     onAction: (OtpAction) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    goEnd:()->Unit,
+    goBack:() -> Unit
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -90,6 +87,7 @@ fun CodeInputScreen(
                     )
                 }
             }
+            .clickable { goBack() }
         )
         Text(
             text = "Code",
@@ -122,7 +120,7 @@ fun CodeInputScreen(
                         }
                     },
                     onNumberChanged = { newNumber ->
-                        onAction(OtpAction.OnEnterNumber(newNumber, index))
+                        onAction(OtpAction.OnEnterNumber(newNumber, index) { goEnd() })
                     },
                     onKeyboardBack = {
                         onAction(OtpAction.OnKeyboardBack)
@@ -141,7 +139,16 @@ fun CodeInputScreen(
             fontWeight = FontWeight(500),
             color = LightBlue
         )
+//        state.isValid?.let { isValid ->
+//            Text(
+//                text = if(isValid) "OTP is valid!" else "OTP is invalid!",
+//                color = if(isValid) Color.Green else Color.Red,
+//                fontSize = 16.sp,
+//                modifier = modifier.align(Alignment.CenterHorizontally)
+//            )
+//        }
     }
+
 }
 
 @Preview
@@ -150,5 +157,5 @@ fun CodeInputScreenPreview() {
     CodeInputScreen(
         state = OtpState(),
         focusRequesters = List(6) { FocusRequester() },
-        onAction = {})
+        onAction = {}, goEnd = {}, goBack = {})
 }

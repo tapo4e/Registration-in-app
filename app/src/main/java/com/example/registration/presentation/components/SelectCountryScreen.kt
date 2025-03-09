@@ -47,7 +47,8 @@ fun SelectCountryScreen(
     modifier: Modifier = Modifier,
     country: List<Country>,
     id: Int,
-    onClick:(id:Int) ->Unit
+    onClick: (id: Int) -> Unit,
+    goBack: () -> Unit
 ) {
 
     Column(
@@ -58,10 +59,10 @@ fun SelectCountryScreen(
     ) {
         Box(
             modifier
-                .clickable { }
                 .clip(CircleShape)
                 .size(24.dp)
                 .background(LightGray2)
+                .clickable { goBack()}
 
         )
         {
@@ -97,54 +98,54 @@ fun SelectCountryScreen(
         )
         LazyColumn {
             items(country.size) {
-                    Row(
-                        modifier
-                            .padding(top = 10.dp)
-                            .size(328.dp, 64.dp)
-                            .clip(RoundedCornerShape(4.dp))
-                            .clickable(indication = rememberRipple(true),
-                                interactionSource = remember { MutableInteractionSource() },
-                                onClick = { onClick(it) }),
+                Row(
+                    modifier
+                        .padding(top = 10.dp)
+                        .size(328.dp, 64.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .clickable(indication = rememberRipple(true),
+                            interactionSource = remember { MutableInteractionSource() },
+                            onClick = { onClick(it) }),
 
 
                     ) {
+                    Image(
+                        painter = painterResource(id = country[it].png),
+                        contentDescription = null,
+                        modifier
+                            .size(40.dp)
+                            .shadow(
+                                4.dp,
+                                shape = CircleShape,
+                                ambientColor = Color.White,
+                                spotColor = Color.Black
+                            )
+                    )
+                    Column(modifier.padding(start = 15.dp)) {
+                        Text(
+                            text = country[it].name,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight(500)
+                        )
+                        Text(
+                            text = country[it].number,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight(400),
+                            color = LightGray
+                        )
+                    }
+                    Spacer(modifier = modifier.weight(1f))
+                    AnimatedVisibility(
+                        visible = it == id,
+                    ) {
                         Image(
-                            painter = painterResource(id = country[it].png),
+                            painter = painterResource(id = R.drawable.check),
                             contentDescription = null,
                             modifier
-                                .size(40.dp)
-                                .shadow(
-                                    4.dp,
-                                    shape = CircleShape,
-                                    ambientColor = Color.White,
-                                    spotColor = Color.Black
-                                )
+                                .size(24.dp)
                         )
-                        Column(modifier.padding(start = 15.dp)) {
-                            Text(
-                                text = country[it].name,
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight(500)
-                            )
-                            Text(
-                                text = country[it].number,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight(400),
-                                color = LightGray
-                            )
-                        }
-                        Spacer(modifier = modifier.weight(1f))
-                        AnimatedVisibility(
-                            visible = it == id,
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.check),
-                                contentDescription = null,
-                                modifier
-                                    .size(24.dp)
-                            )
-                        }
                     }
+                }
 
             }
         }
@@ -156,9 +157,9 @@ fun SelectCountryScreen(
 @Composable
 fun SelectCountryScreenPreview() {
     val countries = listOf<Country>(
-        Country("Belarus", "+375", R.drawable.belarus_flag),
-        Country("Russia", "+7", R.drawable.russian_flag),
-        Country("USA", "+1", R.drawable.american_flag)
+        Country("Belarus", "+375", R.drawable.belarus_flag, Regex(""),1),
+        Country("Russia", "+7", R.drawable.russian_flag,Regex(""),1),
+        Country("USA", "+1", R.drawable.american_flag,Regex(""),1)
     )
-    SelectCountryScreen(country = countries, id = 0, onClick = {})
+    SelectCountryScreen(country = countries, id = 0, onClick = {}, goBack = {})
 }
